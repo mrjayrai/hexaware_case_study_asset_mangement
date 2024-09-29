@@ -1,0 +1,30 @@
+mysql> CREATE TABLE assets (
+    -> asset_id INT ,
+    -> name VARCHAR(100) NOT NULL,
+    -> type VARCHAR(50) NOT NULL,
+    -> serial_number VARCHAR(100) UNIQUE NOT NULL,
+    -> purchase_date DATE,
+    -> location VARCHAR(100),
+    -> status VARCHAR(50) NOT NULL,
+    -> owner_id INT,
+    -> CONSTRAINT assest_pk PRIMARY KEY(asset_id),
+    -> CONSTRAINT fk_owner
+    -> FOREIGN KEY (owner_id) REFERENCES employees(employee_id)
+    -> ON DELETE SET NULL
+    -> );
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> desc assets;
++---------------+--------------+------+-----+---------+-------+
+| Field         | Type         | Null | Key | Default | Extra |
++---------------+--------------+------+-----+---------+-------+
+| asset_id      | int          | NO   | PRI | NULL    |       |
+| name          | varchar(100) | NO   |     | NULL    |       |
+| type          | varchar(50)  | NO   |     | NULL    |       |
+| serial_number | varchar(100) | NO   | UNI | NULL    |       |
+| purchase_date | date         | YES  |     | NULL    |       |
+| location      | varchar(100) | YES  |     | NULL    |       |
+| status        | varchar(50)  | NO   |     | NULL    |       |
+| owner_id      | int          | YES  | MUL | NULL    |       |
++---------------+--------------+------+-----+---------+-------+
+8 rows in set (0.04 sec)

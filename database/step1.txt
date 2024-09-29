@@ -1,0 +1,5 @@
+mysql> create database assetmanagement;
+Query OK, 1 row affected (0.02 sec)
+mysql> use assetmanagement;
+Database changed
+mysql>

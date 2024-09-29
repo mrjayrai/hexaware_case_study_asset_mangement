@@ -1,0 +1,31 @@
+mysql> CREATE TABLE reservations (
+    -> reservation_id INT ,
+    -> asset_id INT,
+    -> employee_id INT,
+    -> reservation_date DATE NOT NULL,
+    -> start_date DATE NOT NULL,
+    -> end_date DATE NOT NULL,
+    -> status VARCHAR(50) NOT NULL,
+    -> CONSTRAINT reserve_pk PRIMARY KEY(reservation_id),
+    -> CONSTRAINT fk_asset_reservation
+    -> FOREIGN KEY (asset_id) REFERENCES assets(asset_id)
+    -> ON DELETE CASCADE,
+    -> CONSTRAINT fk_employee_reservation
+    -> FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    -> ON DELETE CASCADE
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> desc reservations;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| reservation_id   | int         | NO   | PRI | NULL    |       |
+| asset_id         | int         | YES  | MUL | NULL    |       |
+| employee_id      | int         | YES  | MUL | NULL    |       |
+| reservation_date | date        | NO   |     | NULL    |       |
+| start_date       | date        | NO   |     | NULL    |       |
+| end_date         | date        | NO   |     | NULL    |       |
+| status           | varchar(50) | NO   |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+7 rows in set (0.04 sec)

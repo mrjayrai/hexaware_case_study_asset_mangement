@@ -1,0 +1,24 @@
+mysql> CREATE TABLE maintenance_records (
+    -> maintenance_id INT ,
+    -> asset_id INT,
+    -> maintenance_date DATE NOT NULL,
+    -> description TEXT,
+    -> cost DECIMAL(10, 2),
+    -> CONSTRAINT maint_pk PRIMARY KEY(maintenance_id),
+    -> CONSTRAINT fk_asset
+    -> FOREIGN KEY (asset_id) REFERENCES assets(asset_id)
+    -> ON DELETE CASCADE
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> desc maintenance_records;
++------------------+---------------+------+-----+---------+-------+
+| Field            | Type          | Null | Key | Default | Extra |
++------------------+---------------+------+-----+---------+-------+
+| maintenance_id   | int           | NO   | PRI | NULL    |       |
+| asset_id         | int           | YES  | MUL | NULL    |       |
+| maintenance_date | date          | NO   |     | NULL    |       |
+| description      | text          | YES  |     | NULL    |       |
+| cost             | decimal(10,2) | YES  |     | NULL    |       |
++------------------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)

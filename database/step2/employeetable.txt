@@ -1,0 +1,20 @@
+mysql> CREATE TABLE employees (
+    -> employee_id INT ,
+    -> name VARCHAR(100) NOT NULL,
+    -> department VARCHAR(50),
+    -> email VARCHAR(100) UNIQUE NOT NULL,
+    -> password VARCHAR(255) NOT NULL,
+    -> constraint employee_pk PRIMARY KEY(employee_id)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+mysql> desc employees;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| employee_id | int          | NO   | PRI | NULL    |       |
+| name        | varchar(100) | NO   |     | NULL    |       |
+| department  | varchar(50)  | YES  |     | NULL    |       |
+| email       | varchar(100) | NO   | UNI | NULL    |       |
+| password    | varchar(255) | NO   |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+5 rows in set (0.03 sec)

@@ -1,0 +1,26 @@
+mysql> CREATE TABLE asset_allocations (
+    -> allocation_id INT ,
+    -> asset_id INT,
+    -> employee_id INT,
+    -> allocation_date DATE NOT NULL,
+    -> return_date DATE,
+    -> CONSTRAINT asset_all_pk PRIMARY KEY(allocation_id),
+    -> CONSTRAINT fk_asset_allocation
+    -> FOREIGN KEY (asset_id) REFERENCES assets(asset_id)
+    -> ON DELETE CASCADE,
+    -> CONSTRAINT fk_employee_allocation
+    -> FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
+    -> ON DELETE CASCADE
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> desc asset_allocations;
++-----------------+------+------+-----+---------+-------+
+| Field           | Type | Null | Key | Default | Extra |
++-----------------+------+------+-----+---------+-------+
+| allocation_id   | int  | NO   | PRI | NULL    |       |
+| asset_id        | int  | YES  | MUL | NULL    |       |
+| employee_id     | int  | YES  | MUL | NULL    |       |
+| allocation_date | date | NO   |     | NULL    |       |
+| return_date     | date | YES  |     | NULL    |       |
++-----------------+------+---
