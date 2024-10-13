@@ -1,3 +1,4 @@
 # Team Members:-
-1.) Rajeshwari M\n
+1.) Rajeshwari M
+
 2.) Pritesh Rai
