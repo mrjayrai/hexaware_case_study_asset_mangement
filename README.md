@@ -1,1 +1,3 @@
-# hexaware_case_study_asset_mangement
+# Team Members:-
+1.) Rajeshwari M
+2.) Pritesh Rai
