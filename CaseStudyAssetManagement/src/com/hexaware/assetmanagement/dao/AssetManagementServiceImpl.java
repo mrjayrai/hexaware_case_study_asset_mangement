@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 
 import com.hexaware.assetmanagement.entity.Asset;
 import com.hexaware.assetmanagement.entity.Employee;
@@ -98,30 +99,115 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 	@Override
 	public boolean allocateAsset(int assetId, int employeeId, String allocationDate) {
 		// TODO Auto-generated method stub
+		String allocateAssetQuery =  "INSERT INTO asset_allocations (allocation_id, asset_id, employee_id, allocation_date)"
+				+ "VALUES (?, ?, ?, ?);";
+		try {
+			PreparedStatement allocateAssetQueryStmt = conn.prepareStatement(allocateAssetQuery);
+			allocateAssetQueryStmt.setInt(1, assetId);
+			allocateAssetQueryStmt.setInt(2, employeeId);
+			allocateAssetQueryStmt.setDate(3, Date.valueOf(allocationDate));
+			
+			int count = allocateAssetQueryStmt.executeUpdate();
+			if(count>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean deallocateAsset(int assetId, int employeeId, String returnDate) {
 		// TODO Auto-generated method stub
-		return false;
+		String deallocateAssetQuery = "UPDATE asset_allocations SET return_date = ? WHERE asset_id = ? AND employee_id = ? AND return_date IS NULL";
+		try {
+			PreparedStatement deallocateAssetQueryStmt = conn.prepareStatement(deallocateAssetQuery);
+			deallocateAssetQueryStmt.setDate(1, Date.valueOf(returnDate)); 
+			deallocateAssetQueryStmt.setInt(2, assetId);
+			deallocateAssetQueryStmt.setInt(3, employeeId);
+			int affectedRows = deallocateAssetQueryStmt.executeUpdate();
+			return affectedRows>0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	@Override
 	public boolean performMaintenance(int assetId, String maintenanceDate, String description, double cost) {
 		// TODO Auto-generated method stub
+		String insertMaintenanceQuery = "INSERT INTO maintenance_records (maintenance_id, asset_id, maintenance_date, description, cost) "
+                + "VALUES (?, ?, ?, ?, ?);";
+		
+		try {
+			PreparedStatement insertMaintenanceQueryStmt =  conn.prepareStatement(insertMaintenanceQuery);
+			
+			int maintenanceId = generateMaintenanceId(assetId); 
+			insertMaintenanceQueryStmt.setInt(1, maintenanceId); 
+			insertMaintenanceQueryStmt.setInt(2, assetId); 
+			insertMaintenanceQueryStmt.setDate(3, java.sql.Date.valueOf(maintenanceDate)); 
+			insertMaintenanceQueryStmt.setString(4, description); 
+			insertMaintenanceQueryStmt.setDouble(5, cost);
+			
+			int affectedRows = insertMaintenanceQueryStmt.executeUpdate();
+	        return affectedRows > 0;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
 	public boolean reserveAsset(int assetId, int employeeId, String reservationDate, String startDate, String endDate) {
 		// TODO Auto-generated method stub
+		String insertReservationQuery = "INSERT INTO reservations (reservation_id, asset_id, employee_id, reservation_date, start_date, end_date, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);";
+		
+		try {
+			PreparedStatement insertReservationQueryStmt = conn.prepareStatement(insertReservationQuery);
+			int reservationId = generateMaintenanceId(employeeId); 
+			
+			insertReservationQueryStmt.setInt(1, reservationId);
+			insertReservationQueryStmt.setInt(2, assetId);
+			insertReservationQueryStmt.setInt(3, employeeId); 
+			insertReservationQueryStmt.setDate(4, java.sql.Date.valueOf(reservationDate)); 
+			insertReservationQueryStmt.setDate(5, java.sql.Date.valueOf(startDate)); 
+			insertReservationQueryStmt.setDate(6, java.sql.Date.valueOf(endDate)); 
+			insertReservationQueryStmt.setString(7, "Approved");
+			
+			int count = insertReservationQueryStmt.executeUpdate();
+			return count>0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
 	@Override
 	public boolean withdrawReservation(int reservationId) {
 		// TODO Auto-generated method stub
+		String updateReservationQuery = "UPDATE reservations SET status = ? WHERE reservation_id = ?;";
+		try {
+			PreparedStatement updateReservationQueryStmt = conn.prepareStatement(updateReservationQuery);
+			updateReservationQueryStmt.setString(1, "Cancelled"); // Set status to 'Cancelled'
+			updateReservationQueryStmt.setInt(2, reservationId); // Set the reservation ID
+
+	        // Execute the update
+	        int affectedRows = updateReservationQueryStmt.executeUpdate();
+
+	        // Return true if at least one row was updated
+	        return affectedRows > 0;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -146,6 +232,17 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 			return false;
 		}
 		return false;
+	}
+	
+	private int generateMaintenanceId(int assetId) {
+		LocalDate currentDate = LocalDate.now();
+	    int year = currentDate.getYear(); 
+	    int month = currentDate.getMonthValue(); 
+	    int day = currentDate.getDayOfMonth(); 
+	    int limitedAssetId = assetId % 1000; 
+	    int maintenanceId = Integer.parseInt(String.format("%04d%02d%02d%03d", year, month, day, limitedAssetId));
+
+	    return maintenanceId;
 	}
 
 
