@@ -1,5 +1,11 @@
 package com.hexaware.assetmanagement.dao;
 
+/*
+ * @Author: Pritesh Rai
+ * Description: Implemented Dao Interface
+ * Date: 12th Oct 24
+ */
+
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;

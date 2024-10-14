@@ -1,5 +1,11 @@
 package com.hexaware.assetmanagement.entity;
 
+/*
+ * @Author: Pritesh Rai 
+ * Description: Created POJO class for Assets
+ * Date: 12th Oct 24
+ */
+
 import java.time.LocalDate;
 
 public class Asset {

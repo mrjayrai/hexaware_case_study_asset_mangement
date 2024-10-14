@@ -1,4 +1,9 @@
 package com.hexaware.assetmanagement.entity;
+/*
+ * @Author: Pritesh Rai 
+ * Description: Created POJO class for Employees
+ * Date: 12th Oct 24
+ */
 
 public class Employee {
 	private int employeeId;

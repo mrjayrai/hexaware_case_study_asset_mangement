@@ -1,5 +1,9 @@
 package com.hexaware.assetmanagement.dao;
-
+/*
+ * @Author: Pritesh Rai
+ * Description: Dao Interface created
+ * Date: 12th Oct 24
+ */
 import com.hexaware.assetmanagement.entity.Asset;
 import com.hexaware.assetmanagement.entity.Employee;
 

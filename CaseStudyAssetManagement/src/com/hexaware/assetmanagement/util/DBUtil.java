@@ -1,5 +1,9 @@
 package com.hexaware.assetmanagement.util;
-
+/*
+ * @Author: Pritesh Rai 
+ * Description: Created DBUtil class for getting static connection
+ * Date: 12th Oct 24
+ */
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
