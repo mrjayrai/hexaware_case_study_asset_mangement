@@ -32,10 +32,12 @@ public class IAssetManagementBusinessServiceImpl implements IAssetManagementBusi
 		return assetManagementService.deleteAsset(assetId);
 	}
 
+	
+
 	@Override
-	public boolean allocateAsset(int assetId, int employeeId, String allocationDate) {
+	public boolean allocateAsset(int allocationId, int assetId, int employeeId, String allocationDate) {
 		// TODO Auto-generated method stub
-		return assetManagementService.allocateAsset(assetId, employeeId, allocationDate);
+		return assetManagementService.allocateAsset(allocationId, assetId, employeeId, allocationDate);
 	}
 
 	@Override

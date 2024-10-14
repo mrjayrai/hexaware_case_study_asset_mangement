@@ -53,10 +53,14 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 	public boolean updateAsset(Asset asset) {
 		// TODO Auto-generated method stub
 		
+//		String updateAssetQuery = "UPDATE assets SET"
+//				+ "location = ?,"
+//				+ "status = ?,"
+//				+ "WHERE asset_id = ?;";
+		
 		String updateAssetQuery = "UPDATE assets"
-				+ "location = ?,"
-				+ "status = ?,"
-				+ "WHERE asset_id = ?;";
+				+ "     SET location = ?, status = ?"
+				+ "    WHERE asset_id = ?;";
 		try {
 			PreparedStatement updateAssetStmt = conn.prepareStatement(updateAssetQuery);
 			updateAssetStmt.setString(1, asset.getLocation());
@@ -96,27 +100,28 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 		}
 	}
 
-	@Override
-	public boolean allocateAsset(int assetId, int employeeId, String allocationDate) {
-		// TODO Auto-generated method stub
-		String allocateAssetQuery =  "INSERT INTO asset_allocations (allocation_id, asset_id, employee_id, allocation_date)"
-				+ "VALUES (?, ?, ?, ?);";
-		try {
-			PreparedStatement allocateAssetQueryStmt = conn.prepareStatement(allocateAssetQuery);
-			allocateAssetQueryStmt.setInt(1, assetId);
-			allocateAssetQueryStmt.setInt(2, employeeId);
-			allocateAssetQueryStmt.setDate(3, Date.valueOf(allocationDate));
-			
-			int count = allocateAssetQueryStmt.executeUpdate();
-			if(count>0) {
-				return true;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
+//	@Override
+//	public boolean allocateAsset(int allocation_id,int assetId, int employeeId, String allocationDate) {
+//		// TODO Auto-generated method stub
+//		String allocateAssetQuery =  "INSERT INTO asset_allocations (allocation_id, asset_id, employee_id, allocation_date)"
+//				+ "VALUES (?,?, ?, ?);";
+//		try {
+//			PreparedStatement allocateAssetQueryStmt = conn.prepareStatement(allocateAssetQuery);
+//			allocateAssetQueryStmt.setInt(1, assetId);
+//			allocateAssetQueryStmt.setInt(2, assetId);
+//			allocateAssetQueryStmt.setInt(3, employeeId);
+//			allocateAssetQueryStmt.setDate(4, Date.valueOf(allocationDate));
+//			
+//			int count = allocateAssetQueryStmt.executeUpdate();
+//			if(count>0) {
+//				return true;
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return false;
+//	}
 
 	@Override
 	public boolean deallocateAsset(int assetId, int employeeId, String returnDate) {
@@ -243,6 +248,30 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 	    int maintenanceId = Integer.parseInt(String.format("%04d%02d%02d%03d", year, month, day, limitedAssetId));
 
 	    return maintenanceId;
+	}
+
+	@Override
+	public boolean allocateAsset(int allocationId, int assetId, int employeeId, String allocationDate) {
+		// TODO Auto-generated method stub
+		String allocateAssetQuery =  "INSERT INTO asset_allocations (allocation_id, asset_id, employee_id, allocation_date)"
+				+ "VALUES (?,?, ?, ?);";
+		try {
+			
+			PreparedStatement allocateAssetQueryStmt = conn.prepareStatement(allocateAssetQuery);
+			allocateAssetQueryStmt.setInt(1, allocationId);
+			allocateAssetQueryStmt.setInt(2, assetId);
+			allocateAssetQueryStmt.setInt(3, employeeId);
+			allocateAssetQueryStmt.setDate(4, Date.valueOf(allocationDate));
+			
+			int count = allocateAssetQueryStmt.executeUpdate();
+			if(count>0) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 
