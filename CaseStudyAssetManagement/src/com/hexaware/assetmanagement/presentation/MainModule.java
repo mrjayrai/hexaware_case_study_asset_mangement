@@ -1,5 +1,7 @@
 package com.hexaware.assetmanagement.presentation;
-
+/*@ Author : Rajeshwari
+ * 
+ */
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -20,6 +22,10 @@ public class MainModule {
 			System.out.println("3.Update location and status of Asset");
 			System.out.println("4.Delete from Asset");
 			System.out.println("5.Allocate Asset");
+			System.out.println("6.Deallocate Asset");
+			System.out.println("7.Perfom Maintenance");
+			System.out.println("8.Reserve Asset");
+			System.out.println("9.Withdraw Reservation");
 			int choice=scanner.nextInt();
 			switch(choice) {
 			case 1:
@@ -118,7 +124,73 @@ public class MainModule {
 					System.err.println("Problem with asset allocation");
 				}
 				break;
+			case 6:
+				System.out.println("Enter Allocation Id");
+				int dealloacteAllocationId=scanner.nextInt();
+				System.out.println("Enter Employee Id");
+				int deallocationEmployeeId=scanner.nextInt();
+				System.out.println("Enter  Deallocation date");
+				String deallocationDate=scanner.next();
+				boolean checkDeallocation=service.deallocateAsset(dealloacteAllocationId, deallocationEmployeeId, deallocationDate);
+				if(checkDeallocation) {
+					System.out.println("Deallocation done sucessfully");
+				}
+				else {
+					System.err.println("Problem with dealloaction of asset");
+				}
+				break;
 				
+			case 7:
+				System.out.println("Enter Asset Id");
+				int maintenanceAssetId=scanner.nextInt();
+				System.out.println("Enter Maintenance Date");
+				String maintenanceDate=scanner.next();
+				System.out.println("Enter Description");
+				String maintenanceDescription=scanner.next();
+				System.out.println("Enter maintenance Cost");
+				double maintenanceCost=scanner.nextDouble();
+				boolean checkMaintenance=service.performMaintenance(maintenanceAssetId, maintenanceDate, maintenanceDescription, maintenanceCost);
+				if(checkMaintenance) {
+					System.out.println("Maintenance performed successfully");
+				}
+				else {
+					System.err.println("Problem with performing maintenance");
+				}
+				break;
+			case 8:
+				System.out.println("Enter Asset Id for Reservation");
+				int reserveAssetId=scanner.nextInt();
+				System.out.println("Enter Employee Id");
+				int reserveEmployeeId=scanner.nextInt();
+				System.out.println("Enter Reserve Date");
+				String reserveDate=scanner.next();
+				System.out.println("Enter Start Date");
+				String startDate=scanner.next();
+				System.out.println("Enter End Date");
+				String endDate=scanner.next();
+				boolean checkReserve=service.reserveAsset(reserveAssetId, reserveEmployeeId, reserveDate, startDate, endDate);
+				if(checkReserve) {
+					System.out.println("Asset Reserved successfully");
+				}
+				else {
+					System.err.println("Problem with Asset reservation");
+				}
+				break;
+			
+			case 9:
+				System.out.println("Enter Reservation Id");
+				int withdrawReservationId=scanner.nextInt();
+				boolean checkWithdrawReservation=service.withdrawReservation(withdrawReservationId);
+				if(checkWithdrawReservation) {
+					System.out.println("Withdraw Reservation done");
+				}
+				else {
+					System.err.println("Problem with Withdraw Reservation ");
+				}
+				break;
+				
+				
+				}
 				
 				
 				
@@ -134,4 +206,4 @@ public class MainModule {
 // can i open a chrome tab
 	// wait 2 min let me check the error on my pc
 	
-}
+
