@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import com.hexaware.assetmanagement.entity.Asset;
 import com.hexaware.assetmanagement.entity.Employee;
+import com.hexaware.assetmanagement.myexceptions.AssetNotFoundException;
+import com.hexaware.assetmanagement.myexceptions.AssetNotMaintainException;
 import com.hexaware.assetmanagement.service.IAssetManagementBusinessService;
 import com.hexaware.assetmanagement.service.IAssetManagementBusinessServiceImpl;
 
@@ -40,6 +42,7 @@ public class MainModule {
 				System.out.println("Enter Employee Password");
 				String password=scanner.next();
 				Employee employee=new Employee(employeeId,employeeName,department,email,password);
+				boolean checkname=IAssetManagementBusinessServiceImpl.nameValidation(employeeName);
 				boolean addEmployee=service.addEmployee(employee);
 				if(addEmployee) {
 					System.out.println("Employee added successfully");
@@ -79,7 +82,16 @@ public class MainModule {
 			case 3:
 				System.out.println("Enter Asset Id to Update ");
 				int updateAssetId=scanner.nextInt();
-				
+				boolean assetIdFlag=true;
+				try {
+					assetIdFlag=service.checkExistAssetId(updateAssetId);
+				} catch (AssetNotFoundException e) {
+					// TODO Auto-generated catch block
+					if(assetIdFlag==false) {
+						System.err.println("Asset Id is not exist ");
+					}
+					break;
+				}
 				System.out.println("Enter New Location");
 				String newLocation=scanner.next();
 				System.out.println("Enter new Status");
@@ -99,6 +111,13 @@ public class MainModule {
 			case 4:
 				System.out.println("Enter Asset Id to delete the particular asset");
 			    int deleteAssetId=scanner.nextInt();
+			    boolean deleteAssetIdFlag1=true;
+			    try {
+					deleteAssetIdFlag1=service.checkExistAssetId(deleteAssetId);
+				} catch (AssetNotFoundException e) {
+					System.err.println("Invalid Asset Id");
+					break;
+				}
 			    boolean deleteAsset=service.deleteAsset(deleteAssetId);
 			    if(deleteAsset) {
 			    	System.out.println("Asset Deleted Successfully");
@@ -111,12 +130,25 @@ public class MainModule {
 				System.out.println("Enter Allocation id");
 				int allocationId=scanner.nextInt();
 				System.out.println("Enter Asset Id");
-				int alocateAssetId=scanner.nextInt();
+				int allocateAssetId=scanner.nextInt();
+				boolean allocateAssetIdFlag=true;
+				try {
+				     assetIdFlag=service.checkExistAssetId(allocateAssetId);
+				} catch (AssetNotFoundException e) {
+						System.err.println("Asset Id is not exist ");
+						break;
+				}
+				try {
+				    boolean maintainFlag=service.maintenanceDate(allocateAssetId);
+				} catch (AssetNotMaintainException e) {
+						System.err.println("Asset  is not maintained ");
+						break;
+				}
 				System.out.println("Enter Employee id");
 				int allocateEmployeeId=scanner.nextInt();
 				System.out.println("Enter Allocation Date");
 				String allocationDate=scanner.next();
-				boolean allocateAsset=service.allocateAsset(allocationId,alocateAssetId, allocateEmployeeId, allocationDate);
+				boolean allocateAsset=service.allocateAsset(allocationId,allocateAssetId, allocateEmployeeId, allocationDate);
 				if(allocateAsset) {
 					System.out.println("Asset ALoocated Successsfully");
 				}
@@ -127,6 +159,13 @@ public class MainModule {
 			case 6:
 				System.out.println("Enter Allocation Id");
 				int dealloacteAllocationId=scanner.nextInt();
+				boolean deallocationFlag=true;
+				try {
+				     assetIdFlag=service.checkExistAssetId(dealloacteAllocationId);
+				} catch (AssetNotFoundException e) {
+						System.err.println("Asset Id is not exist ");
+						break;
+				}
 				System.out.println("Enter Employee Id");
 				int deallocationEmployeeId=scanner.nextInt();
 				System.out.println("Enter  Deallocation date");
@@ -141,15 +180,19 @@ public class MainModule {
 				break;
 				
 			case 7:
-				System.out.println("Enter Asset Id");
+				System.out.println("Enter Maintenance Id");
+				int maintenanceId=scanner.nextInt();
+				System.out.println("Enter asset id");
 				int maintenanceAssetId=scanner.nextInt();
 				System.out.println("Enter Maintenance Date");
 				String maintenanceDate=scanner.next();
+				scanner.nextLine();
 				System.out.println("Enter Description");
 				String maintenanceDescription=scanner.next();
+				scanner.nextLine();
 				System.out.println("Enter maintenance Cost");
 				double maintenanceCost=scanner.nextDouble();
-				boolean checkMaintenance=service.performMaintenance(maintenanceAssetId, maintenanceDate, maintenanceDescription, maintenanceCost);
+				boolean checkMaintenance=service.performMaintenance(maintenanceId,maintenanceAssetId, maintenanceDate, maintenanceDescription, maintenanceCost);
 				if(checkMaintenance) {
 					System.out.println("Maintenance performed successfully");
 				}
