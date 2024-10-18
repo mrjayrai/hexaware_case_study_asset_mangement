@@ -313,7 +313,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 	    int month = currentDate.getMonthValue(); 
 	    int day = currentDate.getDayOfMonth(); 
 	    int limitedAssetId = assetId % 1000; 
-	    int maintenanceId = Integer.parseInt(String.format("%04d%02d%", year, month, limitedAssetId));
+	    int maintenanceId = Integer.parseInt(String.format("%04d%02d%03d", year, month, limitedAssetId));
 
 	    return maintenanceId;
 	}
