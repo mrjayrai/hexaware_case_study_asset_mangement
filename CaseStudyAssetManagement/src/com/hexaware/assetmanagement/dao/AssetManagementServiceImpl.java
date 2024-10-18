@@ -7,12 +7,17 @@ package com.hexaware.assetmanagement.dao;
  */
 
 import java.sql.Connection;
+import com.hexaware.assetmanagement.myexceptions.AssetNotFoundException;
+import com.hexaware.assetmanagement.myexceptions.AssetNotMaintainException;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 
 import com.hexaware.assetmanagement.entity.Asset;
 import com.hexaware.assetmanagement.entity.Employee;
@@ -26,6 +31,63 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 		super();
 		conn = DBUtil.getConnection();
 	}
+	
+
+	
+
+
+	@Override
+	public boolean checkExistAssetId(int assetId) throws AssetNotFoundException  {
+		// TODO Auto-generated method stub
+		String retriveAssetIdQuery="select asset_id from assets";
+		try {
+			PreparedStatement retrieveAssetIdStmt=conn.prepareStatement(retriveAssetIdQuery);
+			ResultSet resultSet=retrieveAssetIdStmt.executeQuery();
+			while(resultSet.next()) {
+				int existAssetId=resultSet.getInt(1);
+				if(assetId==existAssetId) {
+//					maintenanceDate(assetId);	
+					return true;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		 throw new AssetNotFoundException();
+	}
+//
+public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
+	String checkDate = "select maintenance_date from maintenance_records where asset_id =?";
+	try {
+		PreparedStatement checkDateStmt = conn.prepareStatement(checkDate);
+		checkDateStmt.setInt(1, assetId);
+		ResultSet result = checkDateStmt.executeQuery();
+				if(result.next()) {
+					 Date recDate = result.getDate("maintenance_date"); // SQL Date
+			            LocalDate maintenanceDate = recDate.toLocalDate();  // Convert to LocalDate
+			            
+			            // Calculate the difference in years between the maintenance date and the current date
+			            long yearsDifference = ChronoUnit.YEARS.between(maintenanceDate, LocalDate.now());
+			            
+			            // If the difference is greater than 2 years, return false
+			            System.out.println(yearsDifference);
+			            if (yearsDifference > 2) {
+			                throw new AssetNotMaintainException();
+			            } else {
+			                return true;
+			            }
+				}
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	return false;
+}
+
+
 
 	@Override
 	public boolean addAsset(Asset asset) {
@@ -148,7 +210,7 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 	}
 
 	@Override
-	public boolean performMaintenance(int assetId, String maintenanceDate, String description, double cost) {
+	public boolean performMaintenance(int maintenanceId,int assetId, String maintenanceDate, String description, double cost) {
 		// TODO Auto-generated method stub
 		String insertMaintenanceQuery = "INSERT INTO maintenance_records (maintenance_id, asset_id, maintenance_date, description, cost) "
                 + "VALUES (?, ?, ?, ?, ?);";
@@ -156,7 +218,7 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 		try {
 			PreparedStatement insertMaintenanceQueryStmt =  conn.prepareStatement(insertMaintenanceQuery);
 			
-			int maintenanceId = generateMaintenanceId(assetId); 
+//			int maintenanceId = ge; 
 			insertMaintenanceQueryStmt.setInt(1, maintenanceId); 
 			insertMaintenanceQueryStmt.setInt(2, assetId); 
 			insertMaintenanceQueryStmt.setDate(3, java.sql.Date.valueOf(maintenanceDate)); 
@@ -251,7 +313,7 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 	    int month = currentDate.getMonthValue(); 
 	    int day = currentDate.getDayOfMonth(); 
 	    int limitedAssetId = assetId % 1000; 
-	    int maintenanceId = Integer.parseInt(String.format("%04d%02d%02d%03d", year, month, day, limitedAssetId));
+	    int maintenanceId = Integer.parseInt(String.format("%04d%02d%", year, month, limitedAssetId));
 
 	    return maintenanceId;
 	}
