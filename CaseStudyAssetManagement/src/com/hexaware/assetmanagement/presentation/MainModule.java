@@ -11,14 +11,14 @@ import com.hexaware.assetmanagement.entity.Employee;
 import com.hexaware.assetmanagement.myexceptions.AssetNotFoundException;
 import com.hexaware.assetmanagement.myexceptions.AssetNotMaintainException;
 import com.hexaware.assetmanagement.service.IAssetManagementBusinessService;
-import com.hexaware.assetmanagement.service.IAssetManagementBusinessServiceImpl;
+import com.hexaware.assetmanagement.service.AssetManagementBusinessServiceImpl;
 import com.hexaware.assetmanagement.service.InputValidation;
 
 public class MainModule {
 	static Scanner scanner = new Scanner(System.in);
 
 	public static void main(String[] args) {
-		IAssetManagementBusinessService service = new IAssetManagementBusinessServiceImpl();
+		IAssetManagementBusinessService service = new AssetManagementBusinessServiceImpl();
 		InputValidation validation = new InputValidation();
 		boolean flag = true;
 		while (flag) {
@@ -49,7 +49,7 @@ public class MainModule {
 				String password = scanner.next();
 				Employee employee = new Employee(employeeId, employeeName, department, email, password);
 //				boolean checkname = IAssetManagementBusinessServiceImpl.nameValidation(employeeName);
-				if(!validation.chechEmployee(employee)) {
+				if(!validation.checkEmployee(employee)) {
 					break;
 				}
 				boolean addEmployee = service.addEmployee(employee);
@@ -79,8 +79,13 @@ public class MainModule {
 				String assetStatus = scanner.nextLine();
 				System.out.println("Enter owner id");
 				int ownerId = scanner.nextInt();
+				
+				
 				Asset asset = new Asset(assetId, assetName, assetType, serialNumber, purchaseDate, location,
 						assetStatus, ownerId);
+				if(!validation.checkAsset(asset)) {
+					break;
+				}
 				boolean assetAddCheck = service.addAsset(asset);
 				if (assetAddCheck) {
 					System.out.println("Asset Added Successfully");
@@ -96,7 +101,7 @@ public class MainModule {
 					assetIdFlag = service.checkExistAssetId(updateAssetId);
 				} catch (AssetNotFoundException e) {
 					// TODO Auto-generated c
-						System.err.println("Asset Id is not exist ");
+						System.err.println("Asset Id does not exist ");
 					break;
 				}
 				scanner.nextLine();
@@ -118,9 +123,8 @@ public class MainModule {
 			case 4:
 				System.out.println("Enter Asset Id to delete the particular asset");
 				int deleteAssetId = scanner.nextInt();
-				boolean deleteAssetIdFlag1 = true;
 				try {
-					deleteAssetIdFlag1 = service.checkExistAssetId(deleteAssetId);
+					service.checkExistAssetId(deleteAssetId);
 				} catch (AssetNotFoundException e) {
 					System.err.println("Invalid Asset Id");
 					break;
@@ -195,9 +199,11 @@ public class MainModule {
 				scanner.nextLine();
 				System.out.println("Enter Description");
 				String maintenanceDescription = scanner.nextLine();
-//				scanner.nextLine();
 				System.out.println("Enter maintenance Cost");
 				double maintenanceCost = scanner.nextDouble();
+				if(!validation.checkMaintenance(maintenanceId, maintenanceAssetId, maintenanceDate, maintenanceDescription, maintenanceCost)) {
+					break;
+				}
 				boolean checkMaintenance = service.performMaintenance(maintenanceId, maintenanceAssetId,
 						maintenanceDate, maintenanceDescription, maintenanceCost);
 				if (checkMaintenance) {
@@ -217,6 +223,9 @@ public class MainModule {
 				String startDate = scanner.next();
 				System.out.println("Enter End Date");
 				String endDate = scanner.next();
+				if(!validation.checkReservation(reserveAssetId, reserveEmployeeId, reserveDate, startDate, endDate)) {
+					break;
+				}
 				boolean checkReserve = service.reserveAsset(reserveAssetId, reserveEmployeeId, reserveDate, startDate,
 						endDate);
 				if (checkReserve) {

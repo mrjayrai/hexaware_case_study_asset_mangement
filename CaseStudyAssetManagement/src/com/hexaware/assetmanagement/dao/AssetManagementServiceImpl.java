@@ -72,7 +72,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			            long yearsDifference = ChronoUnit.YEARS.between(maintenanceDate, LocalDate.now());
 			            
 			            // If the difference is greater than 2 years, return false
-			            System.out.println(yearsDifference);
+//			            System.out.println(yearsDifference);
 			            if (yearsDifference > 2) {
 			                throw new AssetNotMaintainException();
 			            } else {
@@ -110,8 +110,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 				return true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Please Select Valid Owner ID");
 			return false;
 		}
 		return false;
