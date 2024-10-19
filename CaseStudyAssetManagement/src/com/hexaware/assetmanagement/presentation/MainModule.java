@@ -4,6 +4,7 @@ package com.hexaware.assetmanagement.presentation;
  * 
  */
 import java.time.LocalDate;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.hexaware.assetmanagement.entity.Asset;
@@ -21,6 +22,9 @@ public class MainModule {
 		IAssetManagementBusinessService service = new AssetManagementBusinessServiceImpl();
 		InputValidation validation = new InputValidation();
 		boolean flag = true;
+		try {
+			
+		
 		while (flag) {
 			System.out.println("ASSET MANAGEMENT SYSTEM");
 			System.out.println("1.Add Employee");
@@ -90,7 +94,7 @@ public class MainModule {
 				if (assetAddCheck) {
 					System.out.println("Asset Added Successfully");
 				} else {
-					System.out.println("Asset not Added");
+//					System.out.println("Asset not Added");
 				}
 				break;
 			case 3:
@@ -231,7 +235,7 @@ public class MainModule {
 				if (checkReserve) {
 					System.out.println("Asset Reserved successfully");
 				} else {
-					System.err.println("Problem with Asset reservation");
+					System.err.println("Problem with Asset reservation"); 
 				}
 				break;
 
@@ -255,6 +259,10 @@ public class MainModule {
 
 			}
 
+		}
+		} catch (InputMismatchException e) {
+			// TODO: handle exception
+			System.err.println("Please Enter Valid Data in respected columns");
 		}
 	}
 
