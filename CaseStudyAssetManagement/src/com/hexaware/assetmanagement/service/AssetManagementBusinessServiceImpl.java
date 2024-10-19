@@ -169,9 +169,9 @@ public class AssetManagementBusinessServiceImpl implements IAssetManagementBusin
 	}
 
 	@Override
-	public boolean deallocateAsset(int assetId, int employeeId, String returnDate) {
+	public boolean deallocateAsset(int allocationId, int employeeId, String returnDate) {
 		// TODO Auto-generated method stub
-		return assetManagementService.deallocateAsset(assetId, employeeId, returnDate);
+		return assetManagementService.deallocateAsset(allocationId, employeeId, returnDate);
 	}
 
 	@Override

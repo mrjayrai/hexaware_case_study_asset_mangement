@@ -57,6 +57,17 @@ public class InputValidation {
 		} catch (AssetNotFoundException e) {
 		}
 		
+		if(asset.getAssetName().length()<4) {
+			System.err.println("Asset Name should be greater than 4 letters");
+			return false;
+		}
+		
+		if(asset.getSerialNumber().length() == 5) {
+			
+		}else {
+			System.err.println("Length should be only 5 characters");
+			return false;
+		}
 		LocalDate date = asset.getPurchaseDate();
 		if(date.isAfter(LocalDate.now())) {
 			System.err.println("Please select present date or date in the past");
@@ -71,9 +82,10 @@ public class InputValidation {
 		
 		try {
 	       service.checkExistAssetId(maintenanceAssetId);
-	       System.err.println("Asset Id does not exist");
-	       return false;
+	       
 	    } catch (AssetNotFoundException e) {
+	    	System.err.println("Asset Id does not exist");
+		       return false;
 	    }
 		LocalDate startDate = LocalDate.parse(maintenanceDate);
 		if(startDate.isAfter(LocalDate.now())) {
@@ -102,6 +114,8 @@ public class InputValidation {
 	        return false;
 	    }
 		
+		
+		
 		LocalDate localReserveDate = LocalDate.parse(reserveDate);
 		
 		if(localReserveDate.isBefore(LocalDate.now())) {
@@ -111,6 +125,11 @@ public class InputValidation {
 		
 		LocalDate localStartDate = LocalDate.parse(startDate);
 		LocalDate localEndDate = LocalDate.parse(endDate);
+		
+		if(localReserveDate.isAfter(localStartDate)) {
+			System.err.println("Reservation Date cannot be after reserve date");
+			return false;
+		}
 		
 		if(localStartDate.isAfter(localEndDate)) {
 			System.err.println("End date cannot be before the start date");

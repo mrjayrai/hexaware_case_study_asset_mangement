@@ -15,7 +15,7 @@ public interface IAssetManagementBusinessService {
     boolean updateAsset(Asset asset);
     boolean deleteAsset(int assetId);
     boolean allocateAsset(int allocation_id,int assetId, int employeeId, String allocationDate);
-    boolean deallocateAsset(int assetId, int employeeId, String returnDate);
+    boolean deallocateAsset(int allocationId, int employeeId, String returnDate);
     boolean performMaintenance(int maintenanceId,int assetId, String maintenanceDate, String description, double cost);
     boolean reserveAsset(int assetId, int employeeId, String reservationDate, String startDate, String endDate);
     boolean withdrawReservation(int reservationId);

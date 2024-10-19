@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+//import java.time.LocalDateTime;
+//import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
@@ -191,13 +193,13 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 //	}
 
 	@Override
-	public boolean deallocateAsset(int assetId, int employeeId, String returnDate) {
+	public boolean deallocateAsset(int allocationId, int employeeId, String returnDate) {
 		// TODO Auto-generated method stub
-		String deallocateAssetQuery = "UPDATE asset_allocations SET return_date = ? WHERE asset_id = ? AND employee_id = ? AND return_date IS NULL";
+		String deallocateAssetQuery = "UPDATE asset_allocations SET return_date = ? WHERE allocation_id = ? AND employee_id = ? AND return_date IS NULL";
 		try {
 			PreparedStatement deallocateAssetQueryStmt = conn.prepareStatement(deallocateAssetQuery);
 			deallocateAssetQueryStmt.setDate(1, Date.valueOf(returnDate)); 
-			deallocateAssetQueryStmt.setInt(2, assetId);
+			deallocateAssetQueryStmt.setInt(2, allocationId);
 			deallocateAssetQueryStmt.setInt(3, employeeId);
 			int affectedRows = deallocateAssetQueryStmt.executeUpdate();
 			return affectedRows>0;
@@ -256,7 +258,8 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			return count>0;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.err.println("Employee Not Found");
 		}
 		
 		return false;
@@ -300,19 +303,17 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			}
 		} catch (SQLException e) {
 			// TODO: handle exception
-			e.printStackTrace();
+//			e.printStackTrace();
+			
 			return false;
 		}
 		return false;
 	}
 	
 	private int generateMaintenanceId(int assetId) {
-		LocalDate currentDate = LocalDate.now();
-	    int year = currentDate.getYear(); 
-	    int month = currentDate.getMonthValue(); 
-	    int day = currentDate.getDayOfMonth(); 
-	    int limitedAssetId = assetId % 1000; 
-	    int maintenanceId = Integer.parseInt(String.format("%04d%02d%03d", year, month, limitedAssetId));
+		long uniquePart = System.nanoTime() % 1000000; // Ensures uniqueness by using nanoseconds
+	    int limitedAssetId = Math.abs(assetId * 31) % 1000; 
+	    int maintenanceId = Integer.parseInt(String.format("%06d%03d", uniquePart, limitedAssetId));
 
 	    return maintenanceId;
 	}
