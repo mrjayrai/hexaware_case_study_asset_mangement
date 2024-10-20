@@ -54,7 +54,7 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
 		 throw new AssetNotFoundException();
@@ -83,7 +83,8 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 				}
 	} catch (SQLException e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
+//		e.printStackTrace();
+		return false;
 	}
 	
 	return false;
@@ -112,7 +113,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 				return true;
 			}
 		} catch (SQLException e) {
-			System.err.println("Please Select Valid Owner ID");
+//			System.err.println("Please Select Valid Owner ID");
 			return false;
 		}
 		return false;
@@ -141,7 +142,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 			return false;
 		}
 		
@@ -164,7 +165,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 			return false;
 		}
 	}
@@ -205,7 +206,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			return affectedRows>0;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 			return false;
 		}
 	}
@@ -231,13 +232,13 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return false;
 	}
 
 	@Override
-	public boolean reserveAsset(int assetId, int employeeId, String reservationDate, String startDate, String endDate) {
+	public boolean reserveAsset(int assetId, int employeeId, String reservationDate, String startDate, String endDate) throws AssetNotFoundException {
 		// TODO Auto-generated method stub
 		String insertReservationQuery = "INSERT INTO reservations (reservation_id, asset_id, employee_id, reservation_date, start_date, end_date, status) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -260,9 +261,10 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			// TODO Auto-generated catch block
 //			e.printStackTrace();
 			System.err.println("Employee Not Found");
+			throw new AssetNotFoundException();
 		}
 		
-		return false;
+//		return false;
 	}
 
 	@Override
@@ -281,7 +283,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 	        return affectedRows > 0;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return false;
 	}
@@ -376,7 +378,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 				}
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 			
 	     return false;
@@ -398,7 +400,7 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return returnDate;
 	}
@@ -417,22 +419,12 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
 		 throw new AssetNotFoundException();
 	}
-//	public static boolean checkEmployeeId(int employeeId) {
-//		String str="select employee_id from employees";
-//		try {
-//			PreparedStatement pstmt=conn.prepareStatement(str);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		ResultSet rs=pstmt.executeQuery();
-//		return false;
-//	}
+
 
 
 }

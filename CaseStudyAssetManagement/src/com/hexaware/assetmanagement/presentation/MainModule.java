@@ -242,8 +242,15 @@ public class MainModule {
 				if(!validation.checkReservation(reserveAssetId, reserveEmployeeId, reserveDate, startDate, endDate)) {
 					break;
 				}
-				boolean checkReserve = service.reserveAsset(reserveAssetId, reserveEmployeeId, reserveDate, startDate,
-						endDate);
+				boolean checkReserve = false;
+				try {
+					checkReserve = service.reserveAsset(reserveAssetId, reserveEmployeeId, reserveDate, startDate,
+							endDate);
+				} catch (AssetNotFoundException e) {
+					// TODO Auto-generated catch block
+//					e.printStackTrace();
+					
+				}
 				if (checkReserve) {
 					System.out.println("Asset Reserved successfully");
 				} else {
@@ -263,7 +270,7 @@ public class MainModule {
 				break;
 			case 10:
 				flag = false;
-				System.out.println("Exiting Asset Managemnet Apllication");
+				System.err.println("Exiting Asset Managemnet Apllication");
 				break;
 			default:
 				System.err.println("Please Choose Valid Options from the menu");

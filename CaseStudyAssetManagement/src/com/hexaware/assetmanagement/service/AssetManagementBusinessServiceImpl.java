@@ -181,9 +181,16 @@ public class AssetManagementBusinessServiceImpl implements IAssetManagementBusin
 	}
 
 	@Override
-	public boolean reserveAsset(int assetId, int employeeId, String reservationDate, String startDate, String endDate) {
+	public boolean reserveAsset(int assetId, int employeeId, String reservationDate, String startDate, String endDate) throws AssetNotFoundException {
 		// TODO Auto-generated method stub
+		try {
+			
+		
 		return assetManagementService.reserveAsset(assetId, employeeId, reservationDate, startDate, endDate);
+		}catch (Exception e) {
+			// TODO: handle exception
+			throw new AssetNotFoundException();
+		}
 	}
 
 	@Override
