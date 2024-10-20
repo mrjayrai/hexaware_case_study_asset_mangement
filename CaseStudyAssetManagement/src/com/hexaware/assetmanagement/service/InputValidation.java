@@ -1,9 +1,12 @@
 package com.hexaware.assetmanagement.service;
 
+import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.hexaware.assetmanagement.dao.AssetManagementServiceImpl;
 import com.hexaware.assetmanagement.entity.Asset;
 import com.hexaware.assetmanagement.entity.Employee;
 import com.hexaware.assetmanagement.myexceptions.AssetNotFoundException;
@@ -76,6 +79,62 @@ public class InputValidation {
 		
 		return true;
 	}
+	public boolean checkUpdateDetails(String location,String status) {
+		if(location.length()<2) {
+			System.err.println("Location should have minimum two character");
+			return false;
+		}
+		if(status.length()<2) {
+			System.err.println("Please Enter valid status");
+			return false;
+		}
+		return true;
+	}
+	public boolean checkAllocation(int allocationId,int allocateAssetId,int allocateEmployeeId,String allocationDate) {
+		if(allocationId<0) {
+			System.err.println("Allocation Id should be positive");
+			return false;
+		}
+		try {
+			if(!AssetManagementServiceImpl.checkExistAssetIdInAllocations(allocateAssetId)) {
+				System.err.println("Asset Already Allocated");
+				return false;
+			}
+		} catch (AssetNotFoundException e) {
+			// TODO Auto-generated catch block
+//			System.out.println("Asset Already Allocated");
+		}
+		if(!AssetManagementServiceImpl.checkExistEmployeeId(allocateEmployeeId)) {
+		System.err.println("Employee not found");
+			return false;
+		}
+		LocalDate allocationDatee=LocalDate.parse(allocationDate);
+		if(allocationDatee.isBefore(LocalDate.now())){
+			System.err.println("Allocation date should not be in past");
+			return false;
+		}
+		return true;
+	}
+	public boolean checkDeallocationDate(int allocationId,String deallocationDate,int employeeId) {
+		LocalDate allocationDate=AssetManagementServiceImpl.getAllocationDate(allocationId);
+//		System.out.println(allocationDate);
+		if(allocationDate == null) {
+			System.err.println("Please enter valid allocation ID");
+			return false;
+		}
+		LocalDate deallocationDates=LocalDate.parse(deallocationDate);
+		if(allocationDate.isAfter(deallocationDates)) {
+			System.err.println("Delllocation date should be after Allocation date");
+			return false;
+		}
+		if(!AssetManagementServiceImpl.checkExistEmployeeId(employeeId)) {
+			System.err.println("Employee not found validation");
+				return false;
+			}
+	   return true;
+		
+	}
+	
 	
 	public boolean checkMaintenance(int maintenanceId,int maintenanceAssetId,
 						String maintenanceDate,String maintenanceDescription,double maintenanceCost) {
@@ -113,6 +172,16 @@ public class InputValidation {
 	    	System.err.println("Asset Id does not exist");
 	        return false;
 	    }
+		try {
+			boolean reservationCheck=AssetManagementServiceImpl.checkAssetIdInReservations(reserveAssetId);
+		if(!reservationCheck) {
+			System.err.println("Asset Already Reserved");
+			return false;
+		}
+		} catch (AssetNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		
