@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import com.hexaware.assetmanagement.dao.AssetManagementServiceImpl;
 import com.hexaware.assetmanagement.entity.Asset;
 import com.hexaware.assetmanagement.entity.Employee;
 import com.hexaware.assetmanagement.myexceptions.AssetNotFoundException;
@@ -114,6 +115,9 @@ public class MainModule {
 				System.out.println("Enter new Status");
 				String newStatus = scanner.nextLine();
 				Asset updateAsset = new Asset();
+				if(!validation.checkUpdateDetails(newLocation,newStatus)) {
+					break;
+				}
 				updateAsset.setAssetId(updateAssetId);
 				updateAsset.setLocation(newLocation);
 				updateAsset.setAssetStatus(newStatus);
@@ -130,7 +134,7 @@ public class MainModule {
 				try {
 					service.checkExistAssetId(deleteAssetId);
 				} catch (AssetNotFoundException e) {
-					System.err.println("Invalid Asset Id");
+					System.err.println("Asset Id not Exist");
 					break;
 				}
 				boolean deleteAsset = service.deleteAsset(deleteAssetId);
@@ -162,6 +166,10 @@ public class MainModule {
 				int allocateEmployeeId = scanner.nextInt();
 				System.out.println("Enter Allocation Date");
 				String allocationDate = scanner.next();
+				boolean checkAllocate=validation.checkAllocation(allocationId, allocateAssetId, allocateEmployeeId, allocationDate);
+				if(!checkAllocate) {
+					break;
+				}
 				boolean allocateAsset = service.allocateAsset(allocationId, allocateAssetId, allocateEmployeeId,
 						allocationDate);
 				if (allocateAsset) {
@@ -173,17 +181,21 @@ public class MainModule {
 			case 6:
 				System.out.println("Enter Allocation Id");
 				int dealloacteAllocationId = scanner.nextInt();
-				boolean deallocationFlag = true;
-				try {
-					assetIdFlag = service.checkExistAssetId(dealloacteAllocationId);
-				} catch (AssetNotFoundException e) {
-					System.err.println("Asset Id is not exist ");
-					break;
-				}
+//				boolean deallocationFlag = true;
+//				try {
+//					assetIdFlag = service.checkExistAssetId(dealloacteAllocationId);
+//				} catch (AssetNotFoundException e) {
+//					System.err.println("Allocation Id is not exist ");
+//					break;
+//				}
 				System.out.println("Enter Employee Id");
 				int deallocationEmployeeId = scanner.nextInt();
 				System.out.println("Enter  Deallocation date");
 				String deallocationDate = scanner.next();
+//				System.out.println(AssetManagementServiceImpl.getAllocationDate(dealloacteAllocationId));
+				if(!validation.checkDeallocationDate(dealloacteAllocationId, deallocationDate,deallocationEmployeeId)) {
+					break;
+				}
 				boolean checkDeallocation = service.deallocateAsset(dealloacteAllocationId, deallocationEmployeeId,
 						deallocationDate);
 				if (checkDeallocation) {
@@ -246,7 +258,7 @@ public class MainModule {
 				if (checkWithdrawReservation) {
 					System.out.println("Withdraw Reservation done");
 				} else {
-					System.err.println("Problem with Withdraw Reservation ");
+					System.err.println("Enter valid reservation Id ");
 				}
 				break;
 			case 10:

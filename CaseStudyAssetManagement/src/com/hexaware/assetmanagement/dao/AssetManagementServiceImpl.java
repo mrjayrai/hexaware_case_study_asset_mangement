@@ -27,7 +27,7 @@ import com.hexaware.assetmanagement.util.DBUtil;
 
 public class AssetManagementServiceImpl implements IAssetManagementService {
 
-	private Connection conn;
+	private static Connection conn;
 
 	public AssetManagementServiceImpl() {
 		super();
@@ -61,7 +61,7 @@ public class AssetManagementServiceImpl implements IAssetManagementService {
 	}
 //
 public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
-	String checkDate = "select maintenance_date from maintenance_records where asset_id =?";
+	String checkDate = "select maintenance_date from maintenance_records where asset_id = ?  order by maintenance_date desc limit 1;";
 	try {
 		PreparedStatement checkDateStmt = conn.prepareStatement(checkDate);
 		checkDateStmt.setInt(1, assetId);
@@ -337,10 +337,102 @@ public boolean maintenanceDate(int assetId) throws AssetNotMaintainException {
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Allocation Id Already Exist");
 		}
 		return false;
 	}
+	public static boolean checkExistAssetIdInAllocations(int assetId) throws AssetNotFoundException  {
+		// TODO Auto-generated method stub
+		String retriveAssetIdQuery="select asset_id from asset_allocations";
+		try {
+			PreparedStatement retrieveAssetIdStmt=conn.prepareStatement(retriveAssetIdQuery);
+			ResultSet resultSet=retrieveAssetIdStmt.executeQuery();
+			while(resultSet.next()) {
+				int existAssetId=resultSet.getInt(1);
+				if(assetId==existAssetId) {
+//					maintenanceDate(assetId);	
+					return false;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.err.println("Asset already allocated");
+		}
+		
+		 throw new AssetNotFoundException();
+	}
+	public static boolean checkExistEmployeeId(int employeeId)   {
+		// TODO Auto-generated method stub
+		String retriveEmployeeIdQuery="select employee_id from employees";
+			try {
+				PreparedStatement retrieveEmployeeIdStmt = conn.prepareStatement(retriveEmployeeIdQuery);
+				ResultSet resultSet=retrieveEmployeeIdStmt.executeQuery();
+				while(resultSet.next()) {
+					int existEmployeeId=resultSet.getInt(1);
+					if(employeeId==existEmployeeId) {
+//						maintenanceDate(assetId);	
+						return true;
+					}
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	     return false;
+	}
+	public static LocalDate getAllocationDate(int allocationId) {
+		String str="select allocation_date from asset_allocations where  allocation_id=?";
+		Date allocationDate=null;
+		LocalDate returnDate = null;
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(str);
+			pstmt.setInt(1, allocationId);
+			ResultSet result=pstmt.executeQuery();
+			while(result.next()) {
+				allocationDate = result.getDate("allocation_date");
+			}
+			if(allocationDate!=null) {
+		 returnDate = allocationDate.toLocalDate();
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return returnDate;
+	}
+	public static boolean checkAssetIdInReservations(int assetId) throws AssetNotFoundException  {
+		// TODO Auto-generated method stub
+		String retriveAssetIdQuery="select asset_id from reservations";
+		try {
+			PreparedStatement retrieveAssetIdStmt=conn.prepareStatement(retriveAssetIdQuery);
+			ResultSet resultSet=retrieveAssetIdStmt.executeQuery();
+			while(resultSet.next()) {
+				int existAssetId=resultSet.getInt(1);
+				if(assetId==existAssetId) {
+//					maintenanceDate(assetId);	
+					return false;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		 throw new AssetNotFoundException();
+	}
+//	public static boolean checkEmployeeId(int employeeId) {
+//		String str="select employee_id from employees";
+//		try {
+//			PreparedStatement pstmt=conn.prepareStatement(str);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		ResultSet rs=pstmt.executeQuery();
+//		return false;
+//	}
 
 
 }
