@@ -1,4 +1,9 @@
 package com.hexaware.assetmanagement.service;
+/*@ Author : Rajeshwari
+
+ * Description : Implemeted Asset Management Service Interface
+ * Date: 18-10-2024
+ */
 import java.time.LocalDate;
 
 /*
@@ -19,112 +24,112 @@ public class AssetManagementBusinessServiceImpl implements IAssetManagementBusin
 		super();
 		assetManagementService = new AssetManagementServiceImpl();
 	}
-	//EMPLOYEE TABLE VALIDATION
-	public static boolean nameValidation(String name) {
-		boolean flag=false;
-		if(name.length()>=3) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean employeeIdValidation(int employeeId) {
-		boolean flag=false;
-		if(employeeId>=0) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean departmentValidation(String departmentName) {
-		boolean flag=false;
-		if(departmentName.length()>=2) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean emailValidation(String email) {
-		boolean flag=false;
-		if(email.length()>=12) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean passwordValidation(String password) {
-		boolean flag=false;
-		if(password.length()>=5) {
-			flag=true;
-		}
-		return flag;
-	}
-	//ASSERT TABLE VALIDATION
-	public static boolean assetValidation(int assetId) {
-		boolean flag=false;
-		if(assetId>0) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean assetNameValidation(String assetName) {
-		boolean flag=false;
-		if(assetName.length()>=2) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean assetTypeValidation(String type) {
-		boolean flag=false;
-		if(type.length()>=5) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean serialNumberValidation(String serialNumber) {
-		boolean flag=false;
-		if(serialNumber.length()>=1) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean locationValidation(String location) {
-		boolean flag=false;
-		if(location.length()>=3) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean ownerIdValidation(int ownerId) {
-		boolean flag=false;
-		if(ownerId>0) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean returnDateValidation(LocalDate date) {
-		boolean flag=false;
-		
-		//
-		return flag;
-	}
-	public static boolean descriptionValidation(String description) {
-		boolean flag=false;
-		if(description.length()>4) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean costValidation(double cost) {
-		boolean flag=false;
-		if(cost>0) {
-			flag=true;
-		}
-		return flag;
-	}
-	public static boolean reservationValidation(int reservationId) {
-		boolean flag=false;
-		if(reservationId>0) {
-			flag=true;
-		}
-		return flag;
-	}
+//	//EMPLOYEE TABLE VALIDATION
+//	public static boolean nameValidation(String name) {
+//		boolean flag=false;
+//		if(name.length()>=3) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean employeeIdValidation(int employeeId) {
+//		boolean flag=false;
+//		if(employeeId>=0) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean departmentValidation(String departmentName) {
+//		boolean flag=false;
+//		if(departmentName.length()>=2) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean emailValidation(String email) {
+//		boolean flag=false;
+//		if(email.length()>=12) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean passwordValidation(String password) {
+//		boolean flag=false;
+//		if(password.length()>=5) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	//ASSERT TABLE VALIDATION
+//	public static boolean assetValidation(int assetId) {
+//		boolean flag=false;
+//		if(assetId>0) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean assetNameValidation(String assetName) {
+//		boolean flag=false;
+//		if(assetName.length()>=2) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean assetTypeValidation(String type) {
+//		boolean flag=false;
+//		if(type.length()>=5) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean serialNumberValidation(String serialNumber) {
+//		boolean flag=false;
+//		if(serialNumber.length()>=1) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean locationValidation(String location) {
+//		boolean flag=false;
+//		if(location.length()>=3) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean ownerIdValidation(int ownerId) {
+//		boolean flag=false;
+//		if(ownerId>0) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean returnDateValidation(LocalDate date) {
+//		boolean flag=false;
+//		
+//		//
+//		return flag;
+//	}
+//	public static boolean descriptionValidation(String description) {
+//		boolean flag=false;
+//		if(description.length()>4) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean costValidation(double cost) {
+//		boolean flag=false;
+//		if(cost>0) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
+//	public static boolean reservationValidation(int reservationId) {
+//		boolean flag=false;
+//		if(reservationId>0) {
+//			flag=true;
+//		}
+//		return flag;
+//	}
 	
 
 	@Override

@@ -1,4 +1,12 @@
 package com.hexaware.assetmanagement.service;
+/*@ Author : Rajeshwari
+ * Description : Implemented Input Validation
+ * Date: 18-10-2024
+ */
+/*@ Author : Pritesh Rai
+ * Description : Implemented InputString Validation using Regex
+ * Date: 18-10-2024
+ */
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -19,16 +27,16 @@ public class InputValidation {
 			return false;
 		}
 		String NAME_REGEX = "^[a-zA-Z\\s]+$";
-		if(employee.getEmployeeName().length()>3) {
+		if(employee.getEmployeeName().length()>=3) {
 			Pattern patternName = Pattern.compile(NAME_REGEX);
 			Matcher nameMatcher = patternName.matcher(employee.getEmployeeName());
 			if(!nameMatcher.matches()) {
-				System.err.println("Employee Name Should be greater then 3 letter's and should not contain number or symbolic values");
+				System.err.println("Employee Name Should be greater than 2 letter's and should not contain number or symbolic values");
 				return false;
 			}
 			
 		}else {
-			System.err.println("Name should be greater then the 3 letter's");
+			System.err.println("Name should be greater than 2 letters");
 			return false;
 		}
 		String email = employee.getEmployeeEmail();
@@ -47,6 +55,10 @@ public class InputValidation {
 			System.err.println("Password should contain\n1 Uppercase\n1 LowerCase\n1 Number\n1 Special character and of length of atleast 8 ");
 			return false;
 		}
+		if(employee.getEmployeeDepartment().length()<2) {
+			System.err.println("Enter Valid Department");
+			return false;
+		}
 		return true;
 	}
 	
@@ -60,20 +72,24 @@ public class InputValidation {
 		} catch (AssetNotFoundException e) {
 		}
 		
-		if(asset.getAssetName().length()<4) {
-			System.err.println("Asset Name should be greater than 4 letters");
+		if(asset.getAssetName().length()<3) {
+			System.err.println("Asset Name should be greater than 3 letters");
 			return false;
 		}
 		
 		if(asset.getSerialNumber().length() == 5) {
 			
 		}else {
-			System.err.println("Length should be only 5 characters");
+			System.err.println("Serial Number Length should be only 5 characters");
 			return false;
 		}
 		LocalDate date = asset.getPurchaseDate();
 		if(date.isAfter(LocalDate.now())) {
 			System.err.println("Please select present date or date in the past");
+			return false;
+		}
+		if(!AssetManagementServiceImpl.checkExistEmployeeId(asset.getOwnerId())) {
+			System.err.println("Owner not exist");
 			return false;
 		}
 		
@@ -151,13 +167,16 @@ public class InputValidation {
 			System.err.println("Maintenance date cannot be in the future");
 			return false;
 		}
-		if (maintenanceDescription.isEmpty() || maintenanceDescription.length() > 255) {
-	        System.err.println("Maintenance description must be between 1 and 255 characters");
-	        return false;
-	    }
-		
-		if (maintenanceCost < 0) {
-	        System.err.println("Maintenance cost must be greater then 0");
+//		if (maintenanceDescription.isEmpty() || maintenanceDescription.length() > 255) {
+//	        System.err.println("Maintenance description must be between 1 and 255 characters");
+//	        return false;
+//	    }
+		if(maintenanceDescription.length() < 5) {
+			System.err.println("Description length must be greater than 5");
+		}
+//		
+		if (maintenanceCost <=0) {
+	        System.err.println("Maintenance cost must be greater than 0");
 	        return false;
 	    }
 		return true;
@@ -180,7 +199,7 @@ public class InputValidation {
 		}
 		} catch (AssetNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		
 		
@@ -203,6 +222,10 @@ public class InputValidation {
 		if(localStartDate.isAfter(localEndDate)) {
 			System.err.println("End date cannot be before the start date");
 	        return false;
+		}
+		if(!AssetManagementServiceImpl.checkExistEmployeeId(reserveEmployeeId)) {
+			System.err.println("Employee not exist");
+			return false;
 		}
 		return true;
 	}

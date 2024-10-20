@@ -1,7 +1,8 @@
 package com.hexaware.assetmanagement.presentation;
 
 /*@ Author : Rajeshwari
- * 
+ * Description : Implemented User Interface for AssetManagement System
+ * Date: 18-10-2024
  */
 import java.time.LocalDate;
 import java.util.InputMismatchException;
@@ -27,7 +28,7 @@ public class MainModule {
 			
 		
 		while (flag) {
-			System.out.println("ASSET MANAGEMENT SYSTEM");
+			System.out.println("******ASSET MANAGEMENT SYSTEM******");
 			System.out.println("1.Add Employee");
 			System.out.println("2.Add Asset");
 			System.out.println("3.Update location and status of Asset");
@@ -61,7 +62,8 @@ public class MainModule {
 				if (addEmployee) {
 					System.out.println("Employee added successfully");
 				} else {
-					System.err.println("EMPLOYEE NOT ADDED");
+					System.err.println("EMPLOYEE ID ALREADY EXIST");
+					break;
 				}
 				break;
 
@@ -94,9 +96,10 @@ public class MainModule {
 				boolean assetAddCheck = service.addAsset(asset);
 				if (assetAddCheck) {
 					System.out.println("Asset Added Successfully");
-				} else {
-//					System.out.println("Asset not Added");
 				}
+//					else {
+//////					System.out.println("Asset not Added");
+////				}
 				break;
 			case 3:
 				System.out.println("Enter Asset Id to Update ");
@@ -176,6 +179,7 @@ public class MainModule {
 					System.out.println("Asset ALoocated Successsfully");
 				} else {
 					System.err.println("Problem with asset allocation");
+					break;
 				}
 				break;
 			case 6:
@@ -201,7 +205,7 @@ public class MainModule {
 				if (checkDeallocation) {
 					System.out.println("Deallocation done sucessfully");
 				} else {
-					System.err.println("Problem with dealloaction of asset");
+					System.err.println("Problem with dealloaction of asset.Enter valid IDs");
 				}
 				break;
 
@@ -225,7 +229,7 @@ public class MainModule {
 				if (checkMaintenance) {
 					System.out.println("Maintenance performed successfully");
 				} else {
-					System.err.println("Problem with performing maintenance");
+					System.err.println("Problem with performing maintenance.Maintenance ID already exist");
 				}
 				break;
 			case 8:
